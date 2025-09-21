@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { CourseModel } = require("../model/courseModel");
 
 const adminRouter = Router();
 //routes
