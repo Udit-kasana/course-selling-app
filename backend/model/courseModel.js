@@ -5,6 +5,7 @@ const CourseSchema = new mongoose.Schema({
   description: { type: String, required: true },
   price: { type: Number, required: true },
   imgurl: { type: String, required: true },
+  isActive: { type: Boolean, default: true },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
 });
 

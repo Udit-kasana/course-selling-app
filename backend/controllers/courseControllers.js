@@ -57,7 +57,11 @@ exports.deleteCourse = async (req, res) => {
   try {
     const { id } = parsed.data;
 
-    const deletedCourse = await CourseModel.findByIdAndDelete(id);
+    const deletedCourse = await CourseModel.findByIdAndUpdate(
+      id,
+      { isActive: false },
+      { new: true }
+    );
 
     if (!deletedCourse) {
       return res.status(404).json({ message: "Course not found." });

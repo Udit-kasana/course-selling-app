@@ -124,6 +124,9 @@ exports.purchaseCourse = async (req, res) => {
     if (!purchasedCourse) {
       return res.status(404).json({ message: "Course not found." });
     }
+    if (!purchasedCourse.isActive) {
+      return res.status(404).json({ message: "Course is Inactive." });
+    }
 
     // Prevent duplicate purchase
     const alreadyPurchased = await PurchaseModel.findOne({
@@ -151,6 +154,48 @@ exports.purchaseCourse = async (req, res) => {
     });
   } catch (e) {
     res.status(500).json({
+      error: e.message,
+    });
+  }
+};
+exports.getYourCourses = async (req, res) => {
+  const id = req.user._id;
+
+  try {
+    const purchases = await PurchaseModel.find({ userId: id }).populate(
+      "courseId"
+    );
+    if (purchases.length === 0) {
+      return res.status(200).send({
+        message: "You have not purchased any courses yet.",
+        courses: [],
+      });
+    }
+
+    const courses = purchases.map((p) => p.courseId);
+    res.status(200).send(courses);
+  } catch (e) {
+    res.status(500).send({
+      message: "Something went wrong.",
+      error: e.message,
+    });
+  }
+};
+exports.getAllCourses = async (req, res) => {
+  try {
+    const courses = await CourseModel.find({ isActive: true });
+
+    if (courses.length === 0) {
+      return res.status(200).json({
+        message: "No courses available yet.",
+        courses: [],
+      });
+    }
+
+    res.status(200).json({ courses });
+  } catch (e) {
+    res.status(500).json({
+      message: "Something went wrong while fetching courses.",
       error: e.message,
     });
   }

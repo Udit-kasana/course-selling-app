@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const { adminAuth } = require("../middlewares/adminAuth");
-const { adminAuthR } = require("../middlewares/auth");
 const {
   createCourse,
   addCourseContent,
@@ -10,22 +9,12 @@ const {
 
 const courseRouter = Router();
 //course routes
-courseRouter.post("/create-course", adminAuthR, adminAuth, createCourse);
+courseRouter.post("/create-course", adminAuth, createCourse);
 
-courseRouter.post(
-  "/add-course-content/:id",
-  adminAuthR,
-  adminAuth,
-  addCourseContent
-);
+courseRouter.delete("/delete-course/:id", adminAuth, deleteCourse);
 
-courseRouter.delete("/delete-course/:id", adminAuthR, adminAuth, deleteCourse);
+courseRouter.post("/add-course-content/:id", adminAuth, addCourseContent);
 
-courseRouter.put(
-  "/update-course-content/:id",
-  adminAuthR,
-  adminAuth,
-  updateCourseContent
-);
+courseRouter.put("/update-course-content/:id", adminAuth, updateCourseContent);
 
 module.exports = courseRouter;
