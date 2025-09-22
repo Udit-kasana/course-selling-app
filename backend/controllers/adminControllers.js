@@ -88,7 +88,7 @@ exports.adminSignin = async (req, res) => {
       });
     }
 
-    //chaeck of user is admin or not
+    //check if user is admin or not
     if (user.role !== "admin") {
       return res.status(401).json({
         message: "Access denied",
@@ -96,7 +96,7 @@ exports.adminSignin = async (req, res) => {
     }
 
     // Sign JWT token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_ADMIN_SECRET, {
       expiresIn: "1h",
     });
 
