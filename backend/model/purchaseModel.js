@@ -12,5 +12,5 @@ const purchaseSchema = new mongoose.Schema({
 });
 
 // Export as named object (preferred)
-const PurchaseModel = mongoose.model("purchases", purchaseSchema);
-module.exports = PurchaseModel;
+const PurchaseModel = mongoose.model("purchase", purchaseSchema);
+module.exports = { PurchaseModel };

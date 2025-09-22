@@ -28,7 +28,7 @@ exports.createCourse = async (req, res) => {
       price,
       imgurl:
         imgurl || "https://via.placeholder.com/400x200.png?text=Course+Image",
-      userId: user._id,
+      userId: req.user._id,
     });
 
     res.status(201).json({
@@ -43,4 +43,33 @@ exports.createCourse = async (req, res) => {
 };
 exports.addCourseContent = () => {};
 exports.updateCourseContent = () => {};
-exports.deleteCourse = () => {};
+exports.deleteCourse = async (req, res) => {
+  const idSchema = z.object({
+    id: z.string().regex(/^[a-f\d]{24}$/i, "Invalid MongoDB ObjectId"),
+  });
+
+  const parsed = idSchema.safeParse(req.params);
+
+  if (!parsed.success) {
+    return res.status(400).json({ errors: parsed.error.errors });
+  }
+
+  try {
+    const { id } = parsed.data;
+
+    const deletedCourse = await CourseModel.findByIdAndDelete(id);
+
+    if (!deletedCourse) {
+      return res.status(404).json({ message: "Course not found." });
+    }
+
+    res.status(200).json({
+      message: "Course deleted successfully.",
+      course: deletedCourse, // optional: return the deleted doc
+    });
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+};

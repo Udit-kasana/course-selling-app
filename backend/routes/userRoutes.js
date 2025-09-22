@@ -1,5 +1,9 @@
 const { Router } = require("express");
-const { userSignup, userSignin } = require("../controllers/userControllers");
+const {
+  userSignup,
+  userSignin,
+  purchaseCourse,
+} = require("../controllers/userControllers");
 const { userAuth } = require("../middlewares/auth");
 
 const userRouter = Router();
@@ -7,11 +11,7 @@ const userRouter = Router();
 //routes
 userRouter.post("/signup", userSignup);
 userRouter.post("/signin", userSignin);
-userRouter.post("/purchase-course", userAuth, (req, res) => {
-  res.json({
-    message: "purchase courses.",
-  });
-});
+userRouter.post("/purchase-course/:id", userAuth, purchaseCourse);
 userRouter.get("/all-courses", userAuth, (req, res) => {
   res.json({
     message: "all available courses.",
