@@ -1,17 +1,11 @@
 const { Router } = require("express");
+const { userSignup, userSignin } = require("../controllers/userControllers");
 
 const userRouter = Router();
+
 //routes
-userRouter.post("/signup", (req, res) => {
-  res.json({
-    message: "user signed up.",
-  });
-});
-userRouter.post("/signin", (req, res) => {
-  res.json({
-    message: "user loged in.",
-  });
-});
+userRouter.post("/signup", userSignup);
+userRouter.post("/signin", userSignin);
 userRouter.post("/purchase-course", (req, res) => {
   res.json({
     message: "purchase courses.",

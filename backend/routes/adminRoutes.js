@@ -1,18 +1,18 @@
 const { Router } = require("express");
-const { CourseModel } = require("../model/courseModel");
+const {
+  adminSignup,
+  adminSignin,
+  promoteUser,
+} = require("../controllers/adminControllers");
+const { adminAuth } = require("../middlewares/adminAuth");
+const { auth } = require("../middlewares/auth");
 
 const adminRouter = Router();
 //routes
-adminRouter.post("/signup", (req, res) => {
-  res.json({
-    message: "admin signed up.",
-  });
-});
-adminRouter.post("/signin", (req, res) => {
-  res.json({
-    message: "admin loged in.",
-  });
-});
+adminRouter.post("/signup", adminSignup);
+adminRouter.post("/signin", adminSignin);
+adminRouter.post("/promote/:id", auth, adminAuth, promoteUser);
+
 adminRouter.post("/create-course", (req, res) => {
   res.json({
     message: "admin created a course.",
